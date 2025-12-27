@@ -6,12 +6,14 @@
     <title>Interactive Water Tank</title>
     <style>
         /* --- GLOBAL & LAYOUT --- */
+        @import url('https://fonts.googleapis.com/css?family=Work+Sans:700');
+
         body,
         html {
             margin: 0;
             padding: 0;
             background-color: #3ad8ff;
-            /* Cyan theme from snippet 2 */
+            /* Cyan theme */
             font-family: 'Segoe UI', Arial, sans-serif;
             overflow: hidden;
             height: 100vh;
@@ -34,22 +36,19 @@
 
         /* --- LEFT COLUMN: TANK VISUALIZATION --- */
         .tank-section {
-            /* Keep it transparent to blend with body */
+            /* Keep it transparent */
         }
 
-        /* Wrapper acts as the coordinate system for the tank */
         .tank-wrapper {
             position: relative;
             width: 300px;
-            /* Adjust size of the tank here */
             height: 420px;
             display: flex;
             justify-content: center;
             align-items: center;
         }
 
-        /* 1. The Water (Bottom Layer) */
-        /* This is the spinning square that moves up/down */
+        /* Water Animation Layer */
         .loader {
             position: absolute;
             top: 0;
@@ -57,32 +56,24 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
-            /* Ensures water doesn't spill outside visual area logic */
             z-index: 1;
         }
 
         .water {
             position: absolute;
             width: 200%;
-            /* Much larger than container to ensure coverage during rotation */
             height: 200%;
             background: white;
             border-radius: 40%;
-            /* Creates the rounded wave edges */
+            /* Rounded wave edges */
             left: -50%;
-
-            /* Initial position (Empty) */
             top: 110%;
-
-            /* Animations */
+            /* Initial Empty */
             animation: wave 5s linear infinite;
-            /* Keeps it spinning */
             transition: top 0.3s ease-out;
-            /* Smooth movement when slider changes */
         }
 
-        /* 2. The SVG Mask & Outline (Top Layer) */
-        /* Sits on top of the water to hide the messy square edges */
+        /* SVG Overlay Layer */
         .tank-svg-overlay {
             position: absolute;
             top: 0;
@@ -90,14 +81,12 @@
             width: 100%;
             height: 100%;
             z-index: 2;
-            /* Must be higher than .loader */
             pointer-events: none;
-            /* Allows clicks to pass through if needed */
         }
 
-        /* Ensure the mask color matches the body background exactly */
         #mask-layer {
             fill: #3ad8ff;
+            /* Matches background */
         }
 
         /* --- MIDDLE COLUMN: SLIDER --- */
@@ -106,16 +95,14 @@
             gap: 20px;
         }
 
-        /* Vertical Slider Styling */
         input[type=range] {
             -webkit-appearance: slider-vertical;
-            /* Standard for Chrome/Safari */
             width: 8px;
             height: 250px;
             cursor: pointer;
         }
 
-        /* --- RIGHT COLUMN: TEXT --- */
+        /* --- RIGHT COLUMN: TEXT & BULB --- */
         .text-section {
             flex-direction: column;
             padding: 40px;
@@ -127,24 +114,59 @@
             margin-bottom: 10px;
         }
 
-        textarea {
+        .bulb-container {
             width: 100%;
-            max-width: 300px;
-            height: 150px;
+            display: flex;
+            justify-content: center;
             margin-top: 20px;
-            padding: 15px;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-radius: 8px;
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            font-size: 14px;
-            font-family: inherit;
-            outline: none;
-            resize: none;
         }
 
-        textarea::placeholder {
-            color: rgba(255, 255, 255, 0.7);
+        /* Bulb CSS */
+        .cfl-container {
+            position: relative;
+            text-align: center;
+        }
+
+        .cfl-container svg {
+            height: 250px;
+            /* Reduced size slightly for layout balance */
+            width: 280px;
+            transform: rotate(180deg);
+            margin-top: 20px;
+        }
+
+        /* Cord for the bulb */
+        .cfl-container::before {
+            position: absolute;
+            content: "";
+            width: 10px;
+            height: 50%;
+            background: #212121;
+            z-index: -1;
+            top: -40%;
+            left: 50%;
+            margin-left: -5px;
+        }
+
+        /* Bulb transitions */
+        .cfl-container .bulb-inner {
+            transition: all 0.2s ease;
+        }
+
+        .cfl-container .streaks {
+            stroke: transparent;
+            transition: all 0.15s ease;
+        }
+
+        /* Bulb ON state */
+        .cfl-container.on .bulb-inner {
+            fill: #f7d756 !important;
+            /* Yellow light */
+        }
+
+        .cfl-container.on .streaks {
+            stroke: #f7d756;
+            /* Yellow streaks */
         }
 
         /* --- ANIMATIONS --- */
@@ -168,20 +190,17 @@
         <div class="section tank-section">
             <div class="tank-wrapper">
 
-                <!-- The Waving Water Div -->
+                <!-- Waving Water -->
                 <div class="loader">
                     <div class="water" id="water"></div>
                 </div>
 
-                <!-- The SVG Overlay (Mask + Border) -->
+                <!-- SVG Overlay -->
                 <svg class="tank-svg-overlay" viewBox="0 0 30 42" preserveAspectRatio="none">
-                    <!-- 1. The Mask: Covers everything OUTSIDE the droplet with Blue -->
-                    <!-- This path is a rectangle minus the droplet shape -->
                     <path id="mask-layer"
                         d="M 0,0 V 42 H 30 V 0 Z 
                              M 13.55,2.04 c 1,2.53 4.33,7.53 10,15 a 12.8,12.8 0 1 1 -20,0 c 5.66,-7.46 9,-12.46 10,-15 z" />
 
-                    <!-- 2. The Border: Draws the white outline on top -->
                     <path fill="transparent" stroke="#ffffff" stroke-width="0.8"
                         d="M 13.55,2.04 c 1,2.53 4.33,7.53 10,15 a 12.8,12.8 0 1 1 -20,0 c 5.66,-7.46 9,-12.46 10,-15 z" />
                 </svg>
@@ -195,12 +214,42 @@
             <span id="levelText" style="font-size: 1.2rem; font-weight: bold;">0%</span>
         </div>
 
-        <!-- RIGHT: Description -->
+        <!-- RIGHT: Description + Bulb -->
         <div class="section text-section">
             <h2>Water Level Control</h2>
             <p>Drag the slider to fill the tank.</p>
-            <p>The water uses CSS rotation to simulate waves, masked by an SVG overlay.</p>
-            <textarea placeholder="Log observations here..."></textarea>
+            <p>If the water falls below 25%, the warning light turns ON.</p>
+
+            <div class="bulb-container">
+                <div class="cfl-container" id="bulb">
+                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 275.3 413.3"
+                        xml:space="preserve">
+                        <g id="off">
+                            <path class="bulb-inner" fill="#dedede" d="M137.7,13.7C67.2,13.7,10,70.9,10,141.4c0,58.3,72.8,118.2,79.9,162.3h47.8h47.8
+                                     c7.1-44,48.9-80.9,78.9-122.3C265.3,50.9,208.2,13.7,137.7,13.7z" />
+                        </g>
+
+                        <g id="outline">
+                            <path fill="#888" stroke="#212121" stroke-width="15" stroke-miterlimit="10"
+                                d="M168.5,375.5h-61.7c-8.9,0-16-7.2-16-16 v-55.8h93.8v55.8C184.6,368.3,177.4,375.5,168.5,375.5z" />
+                            <line fill="#333333" stroke="#212121" stroke-width="15" stroke-miterlimit="10" x1="184.6"
+                                y1="339.6" x2="90.8" y2="339.6" />
+                            <path fill="none" stroke="#212121" stroke-width="15" stroke-miterlimit="10"
+                                d="M137.7,13.7C67.2,13.7,10,70.9,10,141.4 c0,58.3,72.8,118.2,79.9,162.3h47.8h47.8c7.1-44,79.9-103.9,79.9-162.3C265.3,70.9,208.2,13.7,137.7,13.7z" />
+                        </g>
+
+                        <g class="streaks">
+                            <line x1="320" y1="245" x2="280" y2="230" style="stroke-width:15; stroke-linecap: round;" />
+                            <line x1="340" y1="150" x2="300" y2="150" style="stroke-width:15; stroke-linecap: round;" />
+                            <line x1="330" y1="50" x2="290" y2="70" style="stroke-width:15; stroke-linecap: round;" />
+                            <line x1="-10" y1="230" x2="-50" y2="245" style="stroke-width:15; stroke-linecap: round;" />
+                            <line x1="-25" y1="150" x2="-65" y2="150" style="stroke-width:15; stroke-linecap: round;" />
+                            <line x1="-20" y1="70" x2="-60" y2="50" style="stroke-width:15; stroke-linecap: round;" />
+                        </g>
+                    </svg>
+                </div>
+            </div>
+
         </div>
 
     </div>
@@ -209,25 +258,31 @@
         const slider = document.getElementById("levelSlider");
         const water = document.getElementById("water");
         const text = document.getElementById("levelText");
+        const bulb = document.getElementById("bulb");
 
-        // Function to update water level
         function updateLevel() {
-            const val = slider.value;
+            const val = Number(slider.value);
             text.textContent = val + "%";
 
-            // Calculation logic:
-            // 0% on slider  => top: 110% (Water completely hidden below)
-            // 100% on slider => top: -10% (Water covers the top of the shape)
-            // 0 -> 120%, 50 -> 100%, 100 -> 0%
-            const topPos = 120 - (val * 2);  // [web:2][web:3]
-
-
+            // Water Mapping: 
+            // 0% slider => top: 120% (low)
+            // 50% slider => top: 20%
+            // 100% slider => top: -80% (very high)
+            const topPos = 120 - (val * 2);
             water.style.top = topPos + "%";
+
+            // Bulb Logic:
+            // If water <= 25%, turn bulb ON (add class 'on')
+            // Otherwise, turn bulb OFF (remove class 'on')
+            if (val <= 25) {
+                bulb.classList.add("on");
+            } else {
+                bulb.classList.remove("on");
+            }
         }
 
-        // Initialize and Listen
         slider.addEventListener("input", updateLevel);
-        updateLevel(); // Set initial state
+        updateLevel(); // Run once on load
     </script>
 
 </body>

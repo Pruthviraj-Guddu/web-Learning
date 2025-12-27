@@ -1,3 +1,85 @@
+@import url('https://fonts.googleapis.com/css?family=Work+Sans:700');
+
+/* keep right column layout nice */
+.bulb-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+/* from your snippet, converted from nested SCSS to CSS */
+.cfl-container {
+  position: relative;
+  text-align: center;
+}
+
+.cfl-container svg {
+  height: 350px;
+  width: 400px;
+  transform: rotate(180deg);
+  margin-top: 50px;
+}
+
+.cfl-container::before {
+  position: absolute;
+  content: "";
+  width: 15px;
+  height: 70%;
+  background: #212121;
+  z-index: -1;
+  top: -50%;
+  left: 50%;
+  margin-left: -7.5px;
+}
+
+/* button */
+.switch {
+  font-family: 'Work Sans', sans-serif;
+  display: block;
+  padding: 1rem 2rem;
+  width: 140px;
+  line-height: 1.6rem;
+  border-radius: 7px;
+  text-transform: uppercase;
+  background: #C41C1C; /* red when off (low water) */
+  color: #fff;
+  letter-spacing: 2px;
+  font-size: 1.5rem;
+  margin: 2rem auto 0;
+  box-shadow: 3.2px 3.2px 0px 2px rgb(50, 50, 50);
+  border: 0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.switch:focus {
+  outline: 0;
+}
+
+/* green state if you still want manual toggle look */
+.switch.on {
+  background: #2a7b38;
+  transform: translate(2px, 2px);
+  box-shadow: 0.5px 0.5px 0px 0.5px rgb(50, 50, 50);
+}
+
+.cfl-container .bulb-inner {
+  transition: all 0.2s ease;
+}
+
+.cfl-container .streaks {
+  stroke: transparent;
+  transition: all 0.15s ease;
+}
+
+.cfl-container.on .bulb-inner {
+  fill: #f7d756 !important;
+}
+
+.cfl-container.on .streaks {
+  stroke: #f7d756;
+}
+
 body,
 html {
     margin: 0;

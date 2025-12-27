@@ -1,0 +1,66 @@
+body,
+html {
+    margin: 0;
+    padding: 0;
+    background: #3ad8ff;
+    font-family: Arial;
+}
+
+.container {
+    display: flex;
+    height: 100vh;
+}
+
+/* each column */
+.section {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* TANK COLUMN */
+.tank-section {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.tank {
+    width: 300px;
+    height: 90%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.tank-svg {
+    width: 80%;
+    height: 90%;
+}
+
+/* SLIDER COLUMN */
+.slider-section {
+    flex-direction: column;
+    gap: 15px;
+    color: white;
+}
+
+#levelText {
+    font-size: 20px;
+}
+
+/* TEXT PANEL */
+.text-section {
+    flex-direction: column;
+    padding: 30px;
+    color: white;
+}
+
+.text-section textarea {
+    width: 80%;
+    height: 200px;
+    margin-top: 20px;
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+    font-size: 15px;
+}

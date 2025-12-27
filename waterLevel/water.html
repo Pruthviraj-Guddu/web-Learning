@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Water Tank UI</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <!-- LEFT COLUMN - Water Tank -->
+        <div class="section tank-section">
+
+            <div class="tank">
+
+                <!-- SVG DROPLET (with clipPath INSIDE defs) -->
+                <svg viewBox="0 0 30 42" class="tank-svg">
+
+                    <defs>
+                        <clipPath id="dropletClip">
+                            <path d="M 13.5,2 C 14.5,4.5 18,10 23.5,17
+                                 A 12.8,12.8 0 1 1 3.5,17
+                                 C 9,9.5 12.5,4.5 13.5,2 Z" />
+                        </clipPath>
+                    </defs>
+
+                    <!-- Water behind outline -->
+                    <rect id="water-fill" x="-20" y="20" width="60" height="60" fill="white"
+                        clip-path="url(#dropletClip)" />
+
+                    <!-- Outline on top -->
+                    <path d="M 13.5,2 C 14.5,4.5 18,10 23.5,17
+                         A 12.8,12.8 0 1 1 3.5,17
+                         C 9,9.5 12.5,4.5 13.5,2 Z" fill="none" stroke="white" stroke-width="1.3" />
+                </svg>
+
+            </div>
+        </div>
+
+
+        <!-- MIDDLE COLUMN - Slider -->
+        <div class="section slider-section">
+            <input type="range" id="levelSlider" min="0" max="100" value="50"
+                style="writing-mode: vertical-lr; direction: rtl;">
+            <p id="levelText">Water Level: 50%</p>
+        </div>
+
+
+        <!-- RIGHT COLUMN - Text -->
+        <div class="section text-section">
+            <h2>Water Tank Monitor</h2>
+            <p>Adjust slider to fill or drain the tank. Water stays clipped inside droplet.</p>
+            <textarea placeholder="Write description or logs here..."></textarea>
+        </div>
+
+    </div>
+
+
+    <script>
+        const slider = document.getElementById("levelSlider");
+        const water = document.getElementById("water-fill");
+        const text = document.getElementById("levelText");
+
+        // default animated wave movement
+        let position = 20;
+        setInterval(() => {
+            position += 0.3;
+            water.setAttribute("x", -20 + Math.sin(position) * 2); // small left-right wobble
+        }, 30);
+
+        // update height when slider moves
+        slider.addEventListener("input", () => {
+            const level = slider.value;
+            text.textContent = "Water Level: " + level + "%";
+
+            // y decreases to move water up
+            water.setAttribute("y", 60 - (level * 0.6));
+        });
+    </script>
+
+</body>
+
+</html>

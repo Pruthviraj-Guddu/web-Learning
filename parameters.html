@@ -8,6 +8,7 @@
       margin: 0;
       height: 100vh;
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
       font-family: Arial, sans-serif;
@@ -15,31 +16,48 @@
       color: white;
       background-color: #333;
     }
+
+    #example {
+      display: none;
+      margin-top: 20px;
+      font-size: 16px;
+      color: #ddd;
+      text-align: center;
+    }
+
+    #example a {
+      color: #4fc3f7;
+    }
   </style>
 </head>
 <body>
   <div id="message">Hello</div>
 
+  <p id="example">
+    Try:
+    <a href="https://pruthviraj-guddu.github.io/web-Learning/parameters.html?color=pink&name=Raj">
+      https://pruthviraj-guddu.github.io/web-Learning/parameters.html?color=pink&name=Raj
+    </a>
+  </p>
+
   <script>
-    // Read URL parameters
     const params = new URLSearchParams(window.location.search);
 
     const color = params.get("color");
     const name = params.get("name");
 
-    // Change background color if provided
+    // Show example if no parameters were provided
+    if (!window.location.search) {
+      document.getElementById("example").style.display = "block";
+    }
+
     if (color) {
       document.body.style.backgroundColor = color;
     }
 
-    // Update message if name exists
     if (name) {
       document.getElementById("message").textContent = `Hello ${name}`;
     }
   </script>
 </body>
 </html>
-
-<!-- https://pruthviraj-guddu.github.io/web-Learning?color=red&name=raj -->
-<!-- https://dev.to/robert96/get-url-parameters-with-javascript-1ah6 -->
-
